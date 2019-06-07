@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  table
+    tbody
+      tr
+        th Timestamp
+        th Description
+        th Cost
+      each event in events
+        tr
+          td= event.ts
+          td= event.desc
+          td= event.cost

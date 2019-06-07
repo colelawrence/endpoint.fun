@@ -1,0 +1,20 @@
+{
+  "name": "ui",
+  "version": "0.1.0",
+  "description": "User interface for endpoint.fun",
+  "main": "index.js",
+  "author": "Cole Lawrence",
+  "license": "Copyright Cole Lawrence",
+  "private": true,
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/node": "^12.0.7",
+    "typescript": "^3.5.1"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "pug": "^2.0.3",
+    "typeorm": "^0.2.18"
+  }
+}

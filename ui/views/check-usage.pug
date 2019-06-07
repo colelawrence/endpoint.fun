@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  form(action="/usage", method="post")
+    label(for="token") Token:
+    input(name="token")
+    button(type="submit") Check usage
+  div
+    a(href="/revoke") > Revoke token

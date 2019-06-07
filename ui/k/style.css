@@ -1,0 +1,87 @@
+html {
+  font-size: 24px;
+  font-family: 'Monaco', monospace;
+  color: black;
+}
+
+body {
+  max-width: 38rem;
+  margin: 5vh auto;
+  padding: 5vh 5vw;
+}
+
+h1, h2, h3 {
+  font-family: system-ui, serif;
+}
+
+h1.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+pre {
+  padding: 1rem;
+  border: 3px dashed black;
+  box-sizing: border-box;
+  display: inline-block;
+  margin: 0;
+}
+
+nav {
+  margin-top: 3rem;
+}
+
+nav div {
+  margin-bottom: .34rem;
+}
+
+a, a:visited {
+  color: deeppink;
+  text-decoration: none;
+  transition: color .4s ease, background .4s ease;
+}
+
+a:hover:not(:target) {
+  background: deeppink;
+  color: white;
+}
+
+a:target {
+  color: black;
+  cursor: none;
+}
+
+label {
+  display: block;
+  margin-bottom: .25rem;
+}
+
+input, button {
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  color: deeppink;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+input {
+  border: 3px dashed deeppink;
+}
+
+button {
+  border: 3px solid deeppink;
+  cursor: pointer;
+}
+
+table th {
+  text-align: left;
+  border-bottom: 3px dashed black;
+}
+
+table td {
+  padding-right: 1rem;
+}
+
+table td:nth-child(2) {
+  width: 50%;
+}
