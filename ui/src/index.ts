@@ -1,4 +1,8 @@
+import "reflect-metadata";
+import {createConnection} from "typeorm";
 
-import { app } from './express-app'
+import { createApp } from './express-app'
 
-app.listen(3000)
+createConnection().then((conn) => {
+  createApp(conn).listen(3000)
+})

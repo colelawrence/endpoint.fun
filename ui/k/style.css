@@ -36,13 +36,13 @@ nav div {
 }
 
 a, a:visited {
-  color: deeppink;
+  color: slateblue;
   text-decoration: none;
   transition: color .4s ease, background .4s ease;
 }
 
 a:hover:not(:target) {
-  background: deeppink;
+  background: slateblue;
   color: white;
 }
 
@@ -59,17 +59,17 @@ label {
 input, button {
   padding: .5rem 1rem;
   font-size: 1rem;
-  color: deeppink;
+  color: slateblue;
   display: block;
   margin-bottom: 1rem;
 }
 
 input {
-  border: 3px dashed deeppink;
+  border: 3px dashed slateblue;
 }
 
 button {
-  border: 3px solid deeppink;
+  border: 3px solid slateblue;
   cursor: pointer;
 }
 
@@ -84,4 +84,16 @@ table td {
 
 table td:nth-child(2) {
   width: 50%;
+}
+
+.error-flash {
+  color: mediumvioletred;
+  border: 3px solid mediumvioletred;
+  padding: .5rem 1rem;
+}
+
+.warning {
+  color: mediumvioletred;
+  font-style: italic;
+  padding: .5rem 1rem;
 }

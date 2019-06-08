@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11"
+    container_name: "efun_postgres"
+    ports:
+      - "54320:5432"
+    volumes:
+      - efun_dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: test
+      POSTGRES_USER: test
+      POSTGRES_DB: test
+volumes:
+  efun_dbdata:

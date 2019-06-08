@@ -11,6 +11,9 @@ html(lang="en")
   body
     h1.page-title= title
 
+    if error
+      .error-flash= error
+
     block content
 
     block footer

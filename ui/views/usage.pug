@@ -1,14 +1,27 @@
 extends layout
 
 block content
-  table
-    tbody
-      tr
-        th Timestamp
-        th Description
-        th Cost
-      each event in events
+  p.
+    <b>#{token.key}</b>
+
+  if token.revokedAt != null
+    .warning This token was revoked #{token.revokedAt.toISOString()}
+
+  if events.length > 0
+    table
+      tbody
         tr
-          td= event.ts
-          td= event.desc
-          td= event.cost
+          th Timestamp
+          th Description
+          th Cost
+        each event in events
+          tr
+            td= event.ts
+            td= event.desc
+            td= event.cost
+  else
+    p <i>No usage charges, yet...</i>
+
+  p.
+    <b>Created: </b> #{token.createdAt.toISOString()} <br>
+    <b>Updated: </b> #{token.updatedAt.toISOString()}
