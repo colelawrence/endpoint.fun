@@ -20,6 +20,9 @@
       "node"
     ]
   },
+  "exclude": [
+    "ui/store/example/**",
+  ],
   "include": [
     "src/**/*"
   ]

@@ -4,4 +4,28 @@ block page-title
   | docs
 
 block content
-  p Fantastic two page tutorial...
+  h2 Steps
+  h3 1. Create and save a new token
+  p.
+    #[a(href="/new-token", target="_blank") Create a new token] that your actions can be associated with, and copy it's value or print the page for reference.
+  h3 2. Create a function
+  p.
+    Next, we are going to use your token to #[a(href="/new-function", target="_blank") create a function]!
+    The trick to making a function is to write TypeScript which exports your function.<br>
+    The following example is a great starting point!
+  pre.pre-tight.
+    export function greetManyTimes(name: string, times = 1): string {
+      let res = ''
+      while (times>0) {
+        times--
+        res += `Hello ${name}!\n`
+      }
+      return res
+    }
+  h3 3. Execute your function!
+  p.
+    Now, you should be able to see a testable page for your function!
+  img(src="/k/greetManyTimes.png", alt="Greet many times function docs screenshot")
+  p.
+    Then, clicking on the 🧪 button will enable the inputs to test your function!
+  img(src="/k/greetManyTimes-testable.png", alt="Greet many times function docs with testing screenshot")

@@ -135,3 +135,10 @@ hr {
 .indent {
   padding-left: 2rem;
 }
+
+img {
+  text-align: center;
+  width: 100%;
+  height: auto;
+  max-width: 28rem;
+}
