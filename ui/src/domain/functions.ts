@@ -2,14 +2,12 @@ import { Connection, Repository } from 'typeorm'
 
 import * as e from '../entity'
 import * as d from './'
-import { FunDefinition, createFun } from '../typer';
+import { FunDefinition, createFun, FunSignatures } from '../typer';
+import { spawn } from 'child_process';
+import { resolve } from 'path';
+import { Definition } from 'typescript-json-schema';
 
 export type JSONSchema = any;
-
-export type FunSchema = {
-  storageId: string,
-  fns: FunDefinition[],
-}
 
 export type FunBody = string
 
@@ -18,7 +16,7 @@ export type Fun = Readonly<{
   /** lazy load typescript body */
   body: () => FunBody,
   /** lazy load schema */
-  schema: () => FunSchema,
+  schema: () => FunSignatures,
   createdAt: Date,
 }>
 
@@ -117,13 +115,51 @@ export class FunctionBL {
     funE.deactivatedAt = new Date()
     return this.funs.save(funE).then(funFromEntity)
   }
+
+  async callFunction(funId: string, name: string, args: any[]): Promise<any> {
+    const fun = await this.findActiveFunction(funId)
+    const schema = fun.schema()
+    const storageId = schema.storageId
+    const fnSchema = schema.defs.find(fnSchema => fnSchema.name == name)
+
+    if (fnSchema == null)
+      return Promise.reject(`Function with name "${name}" does not exist on endpoint "${funId}"`)
+
+    const uriArgs = args.map((val, idx) => {
+      const type = (<Definition[]>fnSchema.parameters.items)[idx].type
+      switch (type) {
+        case 'array':
+        case 'object':
+          return val
+        default:
+          return JSON.stringify(val)
+      }
+    }).map(encodeURIComponent)
+
+    return new Promise((res, rej) => {
+      const cp = spawn('deno', ['run', `"./v0/${storageId}/call_${name}.ts"`, ...uriArgs], { shell: true, cwd: resolve(__dirname, '../../store') })
+
+      let stdout = ''
+      let stderr = ''
+      cp.stdout.on('data', out => stdout += out)
+      cp.stderr.on('data', err => stderr += err)
+
+      cp.on('close', console.log.bind(console, 'close'))
+      cp.on('disconnect', console.log.bind(console, 'disconnect'))
+      cp.on('message', console.log.bind(console, 'message'))
+      cp.on('exit', (...args) => {
+        console.log('exit', { stdout, stderr }, ...args)
+        res(JSON.parse(decodeURIComponent(stdout.replace(/^.*>>&>>><<<&<</, ''))))
+      })
+    })
+  }
 }
 
 const ENC_EX0 = "ex0";
 
 const CODERS_BY_VERSION = {
   [ENC_EX0]: {
-    bufferToSchema(buf: Buffer): FunSchema {
+    bufferToSchema(buf: Buffer): FunSignatures {
       return JSON.parse(buf.toString("utf-8"))
     },
     bufferToBody(buf: Buffer): FunBody {

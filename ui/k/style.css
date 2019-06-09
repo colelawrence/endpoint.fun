@@ -77,7 +77,7 @@ input, textarea, select {
 textarea {
   font-size: .65rem;
   height: 10rem;
-  font-family: 'Fira Code', 'Hack', 'Menlo', inherit;
+  font-family: 'Fira Code', 'Hack', 'Menlo', system-ui;
 }
 
 textarea.large-textarea {

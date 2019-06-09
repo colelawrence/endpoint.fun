@@ -38,11 +38,13 @@ export function addFunRoutes(app: Express, conn: Connection) {
     res.render('function-docs', { fun, schema: fun.schema() })
   })
 
-  v0.post('/:funId/:funName', (req, res) => {
+  v0.post('/:funId/:funName', async (req, res) => {
     const funId = req.params.funId
     const funName = req.params.funName
     const args = req.body
-    res.end(JSON.stringify({ funId, funName, args }, null, 2))
+    const argsAsc = Object.keys(args).sort().map(k => args[k])
+    const result = await funs.callFunction(funId, funName, argsAsc)
+    res.end(JSON.stringify(result, null, 2))
   })
 
   app.use('/v0', v0)
