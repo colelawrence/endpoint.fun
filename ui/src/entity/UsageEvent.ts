@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import * as e from '.'
+
+import * as e from './'
 
 export type UsageEventKind = 'create' | 'call' | 'delete';
 const USAGE_EVENT_KINDS: UsageEventKind[] = ['create', 'call', 'delete']

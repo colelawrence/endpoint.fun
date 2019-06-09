@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import * as e from '.'
 
+import * as e from './'
 
 @Entity()
 export class PaymentToken {

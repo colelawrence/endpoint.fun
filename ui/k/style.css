@@ -24,7 +24,12 @@ pre {
   border: 3px dashed black;
   box-sizing: border-box;
   display: inline-block;
-  margin: 0;
+  /* margin: 0; */
+}
+
+pre.pre-tight {
+  padding: .5rem;
+  font-size: .65rem;
 }
 
 nav {
@@ -56,16 +61,28 @@ label {
   margin-bottom: .25rem;
 }
 
-input, button {
-  padding: .5rem 1rem;
+input, button, textarea, select {
+  padding: .5rem;
   font-size: 1rem;
   color: slateblue;
   display: block;
   margin-bottom: 1rem;
 }
 
-input {
+input, textarea, select {
   border: 3px dashed slateblue;
+  width: 20rem;
+}
+
+textarea {
+  font-size: .65rem;
+  height: 10rem;
+  font-family: 'Fira Code', 'Hack', 'Menlo', inherit;
+}
+
+textarea.large-textarea {
+  font-size: .65rem;
+  height: 10rem;
 }
 
 button {
@@ -80,10 +97,18 @@ table th {
 
 table td {
   padding-right: 1rem;
+  word-break: break-all;
 }
 
 table td:nth-child(2) {
   width: 50%;
+}
+
+hr {
+  border: none;
+  border-bottom: 3px solid black;
+  width: 6em;
+  margin-left: 0;
 }
 
 .error-flash {
@@ -96,4 +121,13 @@ table td:nth-child(2) {
   color: mediumvioletred;
   font-style: italic;
   padding: .5rem 1rem;
+}
+
+.token {
+  font-size: 33.33%;
+  display: inline-block;
+  max-width: 19em;
+  word-wrap: break-word;
+  vertical-align: middle;
+  background: whitesmoke;
 }

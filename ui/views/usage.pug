@@ -1,27 +1,43 @@
 extends layout
 
+block head-title
+  | 📝 usage
+
+block page-title
+  | usage/
+  .token #{token.key}
+
 block content
-  p.
-    <b>#{token.key}</b>
+
+  style.
+    .nowrap { white-space: nowrap; width: 1em; }
 
   if token.revokedAt != null
     .warning This token was revoked #{token.revokedAt.toISOString()}
 
-  if events.length > 0
-    table
-      tbody
-        tr
-          th Timestamp
-          th Description
-          th Cost
-        each event in events
-          tr
-            td= event.ts
-            td= event.desc
-            td= event.cost
-  else
-    p <i>No usage charges, yet...</i>
+  - const linkFns = (desc) => desc.replace(/\{fn#(\w+)\}/g, (_, fnId) => `{<a href="/v0/${fnId}">fn#${fnId}</a>}`)
 
-  p.
-    <b>Created: </b> #{token.createdAt.toISOString()} <br>
-    <b>Updated: </b> #{token.updatedAt.toISOString()}
+  div(style="font-size: .8rem")
+    if events.length > 0
+      table
+        tbody
+          tr
+            th.nowrap(style="width: 14em") Timestamp
+            th(style="width:100%") Description
+            th.nowrap Cost
+          each event in events
+            tr
+              td.nowrap= event.ts
+              td!= linkFns(event.desc)
+              td.nowrap= event.cost
+          tr
+            td(colspan="2", style="text-align: right") <b>Total cost: </b>
+            td.nowrap= totalCost
+    else
+      p <i>No usage charges, yet...</i>
+
+    hr
+
+    p.
+      <b>Created: </b> #{token.createdAt.toISOString()} <br>
+      <b>Updated: </b> #{token.updatedAt.toISOString()}

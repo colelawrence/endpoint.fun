@@ -1,5 +1,8 @@
 extends layout
 
+block page-title
+  | check usage
+
 block content
   form(action="/usage", method="post")
     label(for="token") Token:

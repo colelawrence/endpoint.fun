@@ -1,0 +1,87 @@
+extends layout
+
+block head-title
+  | 📖 ƒ #{fun.id}
+
+block page-title
+  | v0/<span class="token">#{fun.id}</span>
+
+block content
+  style.
+    .toggle-tests {
+      display: inline-block;
+      cursor: pointer;
+      pointer-events: all;
+      user-select: none;
+      border-bottom: 3px solid transparent;
+    }
+    .toggle-tests::after {
+      content: '🧪';
+    }
+    .fn-tester {
+      display: none;
+    }
+    input.fn-test-cb {
+      display: none;
+    }
+    input.fn-test-cb:checked + .fn-enable-tests .fn-tester {
+      display: block;
+    }
+    input.fn-test-cb:checked + .fn-enable-tests .toggle-tests {
+      border-bottom: 3px solid lawngreen;
+    }
+  each val, fnId in schema.fns
+    - const anchorId = `test-${fnId}`
+    input.fn-test-cb(type="checkbox", name=anchorId, id=anchorId)
+    .fn-enable-tests
+      - const args = val.args
+      - const returns = val.returns
+      b #{fnId}/#{args.length} #[label.toggle-tests(for=anchorId, title="Toggle test helpers")]
+      //- if args.length > 0
+      //-   label params
+      //-   pre.pre-tight= JSON.stringify(args, null, 2)
+      - const frameId = `frame-${fnId}`
+      - const formAction = `/v0/${fun.id}/${fnId}`
+      //- Tester
+      form(action=formAction, method="post", target=frameId)
+        //- Args
+        if args.length > 0
+          each arg, index in args
+            - const argWithoutTitles = Object.assign({}, arg)
+            - delete argWithoutTitles['title']
+            - delete argWithoutTitles['type']
+            - delete argWithoutTitles['description']
+            - const argName = `arg${index}`
+            label(for=argName) @param {#[b= arg.type]} #{arg.title || index}
+            if arg.description
+              span= arg.description
+            if Object.keys(argWithoutTitles).length > 0
+              pre.pre-tight= JSON.stringify(argWithoutTitles, null, 2)
+            .fn-tester
+              if arg.type == "string"
+                input(name=argName, id=argName, type="text")
+              else if arg.type == "boolean"
+                select(name=argName, id=argName, size="3")
+                  option(value="null" selected) null
+                  option(value="true") true
+                  option(value="false") false
+              else if arg.type == "number"
+                input(name=argName, id=argName, type="number")
+              else
+                textarea(name=argName, id=argName, cols="30", rows="10")
+
+        .fn-tester
+          button(type="submit") Test
+
+        //- Returns
+        - const returnsWithoutTitles = Object.assign({}, returns)
+        - delete returnsWithoutTitles['title']
+        - delete returnsWithoutTitles['type']
+        - delete returnsWithoutTitles['description']
+        label @returns {#[b= returns.type || returns.$ref]} #{returns.title}
+        if Object.keys(returnsWithoutTitles).length > 0
+          pre.pre-tight= JSON.stringify(returnsWithoutTitles, null, 2)
+
+      iframe.fn-tester(name=frameId)
+
+      hr

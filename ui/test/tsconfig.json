@@ -1,26 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "es5",
-      "es6"
-    ],
-    "rootDir": "src",
-    "outDir": "dist",
-    "baseUrl": ".",
-    "module": "commonjs",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "module": "esnext",
     "moduleResolution": "node",
+    "rootDir": ".",
     "strict": true,
     "declaration": true,
     "sourceMap": true,
     "inlineSources": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "types": [
-      "node"
-    ]
+    "types": []
   },
   "include": [
-    "src/**/*"
+    "**/*"
   ]
 }

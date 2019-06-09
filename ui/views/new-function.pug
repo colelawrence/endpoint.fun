@@ -1,0 +1,15 @@
+extends layout
+
+block head-title
+  | new function
+
+block page-title
+  | new function
+
+block content
+  form(action="/new-function", method="post")
+    label(for="token") Token:
+    input(name="token")
+    label(for="fnbody") Function body:
+    textarea.large-textarea(name="fnbody")
+    button(type="submit") Create

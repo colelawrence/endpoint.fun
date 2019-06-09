@@ -1,5 +1,11 @@
 extends layout
 
+block head-title
+  | 🔑 created
+
+block page-title
+  | token created
+
 block content
   label Token:
-  pre=token.key
+  pre= token.key

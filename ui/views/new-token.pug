@@ -1,5 +1,11 @@
 extends layout
 
+block head-title
+  | new token
+
+block page-title
+  | new token
+
 block content
   p <i>Pretend there was a Paypal handoff...</i>
   form(action="/new-token", method="post")

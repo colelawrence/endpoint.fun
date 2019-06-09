@@ -5,11 +5,16 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title= title
+    title
+      block head-title
+      | | endpoint.fun
     link(rel="stylesheet", href="/k/style.css")
 
   body
-    h1.page-title= title
+    h1.page-title
+      a(href="/") endpoint.fun
+      | /
+      block page-title
 
     if error
       .error-flash= error
@@ -20,6 +25,8 @@ html(lang="en")
       nav
         div
           a(href="/new-token") > New token
+        div
+          a(href="/new-function") > New function
         div
           a(href="/check-usage") > Check usage
         div

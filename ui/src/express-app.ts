@@ -3,6 +3,7 @@ import * as path from 'path'
 const bodyParser = require('body-parser')
 
 import { addTokenRoutes } from './routes/token'
+import { addFunRoutes } from './routes/fun'
 
 import { Connection } from 'typeorm';
 
@@ -23,6 +24,7 @@ export function createApp(conn: Connection): express.Express {
   })
 
   addTokenRoutes(app, conn)
+  addFunRoutes(app, conn)
 
   return app
 }

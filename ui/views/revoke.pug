@@ -1,5 +1,11 @@
 extends layout
 
+block head-title
+  | revoke token
+
+block page-title
+  | revoke token
+
 block content
   form(action="/revoke", method="post")
     label(for="token") Token:
