@@ -2,16 +2,13 @@ import { Connection, Repository } from 'typeorm'
 
 import * as e from '../entity'
 import * as d from './'
+import { FunDefinition, createFun } from '../typer';
 
 export type JSONSchema = any;
 
 export type FunSchema = {
-  fns: {
-    [id: string]: {
-      args: JSONSchema[],
-      returns: JSONSchema,
-    }
-  }
+  storageId: string,
+  fns: FunDefinition[],
 }
 
 export type FunBody = string
@@ -133,29 +130,13 @@ const CODERS_BY_VERSION = {
       return buf.toString("utf-8")
     },
     /** @todo need to actually check the TypeScript and attempt to generate schema from it */
-    encodeBody(_body: FunBody): Promise<e.FunEncodedTriple> {
-      const EXAMPLE_BODY = "export function greet(name: string, excited: boolean) { return 'TODO: implement body from entity buffer'; }";
-      const EXAMPLE_SCHEMA = <FunSchema>{
-        fns: {
-          greet: {
-            args: [{
-              title: "name",
-              type: "string"
-            }, {
-              title: "excited",
-              type: "boolean"
-            }],
-            returns: {
-              type: "string"
-            },
-          }
-        }
-      };
+    encodeBody(body: FunBody): Promise<e.FunEncodedTriple> {
+      const funSchema = createFun(body);
 
       return Promise.resolve({
         encodingVersion: ENC_EX0,
-        encodedBody: new Buffer(EXAMPLE_BODY, "utf-8"),
-        encodedSchema: new Buffer(JSON.stringify(EXAMPLE_SCHEMA), "utf-8")
+        encodedBody: new Buffer(body, "utf-8"),
+        encodedSchema: new Buffer(JSON.stringify(funSchema), "utf-8")
       })
     }
   }

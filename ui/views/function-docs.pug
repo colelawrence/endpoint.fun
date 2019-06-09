@@ -30,58 +30,66 @@ block content
     input.fn-test-cb:checked + .fn-enable-tests .toggle-tests {
       border-bottom: 3px solid lawngreen;
     }
-  each val, fnId in schema.fns
-    - const anchorId = `test-${fnId}`
+  each fn in schema.defs
+    - const anchorId = `test-${fn.name}`
     input.fn-test-cb(type="checkbox", name=anchorId, id=anchorId)
     .fn-enable-tests
-      - const args = val.args
-      - const returns = val.returns
-      b #{fnId}/#{args.length} #[label.toggle-tests(for=anchorId, title="Toggle test helpers")]
-      //- if args.length > 0
-      //-   label params
-      //-   pre.pre-tight= JSON.stringify(args, null, 2)
-      - const frameId = `frame-${fnId}`
-      - const formAction = `/v0/${fun.id}/${fnId}`
-      //- Tester
-      form(action=formAction, method="post", target=frameId)
-        //- Args
-        if args.length > 0
-          each arg, index in args
-            - const argWithoutTitles = Object.assign({}, arg)
-            - delete argWithoutTitles['title']
-            - delete argWithoutTitles['type']
-            - delete argWithoutTitles['description']
-            - const argName = `arg${index}`
-            label(for=argName) @param {#[b= arg.type]} #{arg.title || index}
-            if arg.description
-              span= arg.description
-            if Object.keys(argWithoutTitles).length > 0
-              pre.pre-tight= JSON.stringify(argWithoutTitles, null, 2)
-            .fn-tester
-              if arg.type == "string"
-                input(name=argName, id=argName, type="text")
-              else if arg.type == "boolean"
-                select(name=argName, id=argName, size="3")
-                  option(value="null" selected) null
-                  option(value="true") true
-                  option(value="false") false
-              else if arg.type == "number"
-                input(name=argName, id=argName, type="number")
-              else
-                textarea(name=argName, id=argName, cols="30", rows="10")
+      - const params = fn.parameters.items
+      - const returns = fn.returns
+      b #{fn.name}/#{params.length} #[label.toggle-tests(for=anchorId, title="Toggle test helpers")]
+      .indent
+        if fn.description
+          p= fn.description
+        //- if params.length > 0
+        //-   label params
+        //-   pre.pre-tight= JSON.stringify(params, null, 2)
+        - const frameId = `frame-${fn.name}`
+        - const formAction = `/v0/${fun.id}/${fn.name}`
+        //- Tester
+        form(action=formAction, method="post", target=frameId)
+          //- Args
+          if params.length > 0
+            each item, index in params
+              - const itemWithoutTitles = Object.assign({}, item)
+              - delete itemWithoutTitles['title']
+              - delete itemWithoutTitles['type']
+              - delete itemWithoutTitles['description']
+              - delete itemWithoutTitles['$schema']
+              - const itemName = `arg${index}`
+              label(for=itemName) @param {#[b= item.type]} #{item.title || index}
+              .indent
+                if item.description
+                  div= item.description
+                if Object.keys(itemWithoutTitles).length > 0
+                  pre.pre-tight= JSON.stringify(itemWithoutTitles, null, 2)
+                .fn-tester
+                  if item.type == "string"
+                    input(name=itemName, id=itemName, type="text")
+                  else if item.type == "boolean"
+                    select(name=itemName, id=itemName, size="3")
+                      option(value="null" selected) null
+                      option(value="true") true
+                      option(value="false") false
+                  else if item.type == "number"
+                    input(name=itemName, id=itemName, type="number")
+                  else
+                    textarea(name=itemName, id=itemName, cols="30", rows="10")
 
-        .fn-tester
-          button(type="submit") Test
+          .fn-tester
+            button(type="submit") Test
 
-        //- Returns
-        - const returnsWithoutTitles = Object.assign({}, returns)
-        - delete returnsWithoutTitles['title']
-        - delete returnsWithoutTitles['type']
-        - delete returnsWithoutTitles['description']
-        label @returns {#[b= returns.type || returns.$ref]} #{returns.title}
-        if Object.keys(returnsWithoutTitles).length > 0
-          pre.pre-tight= JSON.stringify(returnsWithoutTitles, null, 2)
+          //- Returns
+          - const returnsWithoutTitles = Object.assign({}, returns)
+          - delete returnsWithoutTitles['title']
+          - delete returnsWithoutTitles['type']
+          - delete returnsWithoutTitles['description']
+          - delete returnsWithoutTitles['$schema']
+          label @returns {#[b= returns.type || returns.$ref]} #{returns.title}
+          if Object.keys(returnsWithoutTitles).length > 0
+            pre.pre-tight= JSON.stringify(returnsWithoutTitles, null, 2)
 
-      iframe.fn-tester(name=frameId)
+        iframe.fn-tester(name=frameId)
 
       hr
+  h2 JSON Schema
+  pre.pre-tight= JSON.stringify(schema.defs, null, 2)

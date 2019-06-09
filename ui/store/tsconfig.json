@@ -13,6 +13,9 @@
     "experimentalDecorators": true,
     "types": []
   },
+  "exclude": [
+    "*_*.ts"
+  ],
   "include": [
     "**/*"
   ]
