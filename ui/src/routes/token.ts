@@ -24,7 +24,8 @@ export function addTokenRoutes(app: Express, conn: Connection) {
       res.redirect('/?from=revoked')
     }).catch(err => {
       console.error("Token failed to be revoked", err)
-      res.render('revoke', { error: err.toString() })
+      // TODO: check if it was our fault and return 500
+      res.status(400).render('revoke', { error: err.toString() })
     })
   })
 
@@ -33,8 +34,9 @@ export function addTokenRoutes(app: Express, conn: Connection) {
       console.log("Token generated", token)
       res.render('token-created', { token: token })
     }).catch(err => {
+      // TODO: check if it was our fault and return 500
       console.error("Token failed to be generated", err)
-      res.render('new-token', { error: err.toString() })
+      res.status(400).render('new-token', { error: err.toString() })
     })
   })
 
@@ -48,7 +50,7 @@ export function addTokenRoutes(app: Express, conn: Connection) {
         totalCost: cost(events.map(evt => evt.cost).reduce((a, b) => Math.round(b) + a, 0)),
       })
     }).catch(err => {
-      res.render('check-usage', { error: err.toString() })
+      res.status(400).render('check-usage', { error: err.toString() })
     })
   })
 

@@ -188,7 +188,7 @@ function getFns(file: string): Fn[] {
 }
 
 function fnSymToFn(checker: ts.TypeChecker, symbol: ts.Symbol): Fn {
-  const params = (<(ts.Node & { [s: string]: any })[]>(<any>symbol.valueDeclaration).parameters);
+  const params = (<(ts.Node & { [s: string]: any })[]>(<any>symbol.valueDeclaration).parameters || []);
   ts.SyntaxKind.StringKeyword
   return (<Fn>{
     name: symbol.getName(),

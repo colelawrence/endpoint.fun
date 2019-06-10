@@ -18,7 +18,8 @@ export function addFunRoutes(app: Express, conn: Connection) {
 
       res.redirect(`/v0/${fun.id}`)
     } catch (error) {
-      res.render('new-function', { error })
+      console.error('POST /new-function', error)
+      res.status(400).render('new-function', { error })
     }
   })
 
@@ -39,12 +40,21 @@ export function addFunRoutes(app: Express, conn: Connection) {
   })
 
   v0.post('/:funId/:funName', async (req, res) => {
-    const funId = req.params.funId
-    const funName = req.params.funName
-    const args = req.body
-    const argsAsc = Object.keys(args).sort().map(k => args[k])
-    const result = await funs.callFunction(funId, funName, argsAsc)
-    res.end(JSON.stringify(result, null, 2))
+    try {
+      const funId = req.params.funId
+      const funName = req.params.funName
+      const args = req.body
+      const argsAsc = Object.keys(args).sort().map(k => args[k])
+      const result = await funs.callFunction(funId, funName, argsAsc)
+      if (result.error) {
+        res.status(400).json(result)
+      } else {
+        res.json(result)
+      }
+    } catch (error) {
+      console.error('POST /:funId/:funName', error)
+      res.status(500).json({ error: 'Internal error' })
+    }
   })
 
   app.use('/v0', v0)
