@@ -3,8 +3,8 @@
    "host": "localhost",
    "port": 54320,
    "username": "postgres",
-   "password": "",
-   "database": "efun",
+   "password": "postgres",
+   "database": "postgres",
    "synchronize": true,
    "logging": false,
    "entities": [

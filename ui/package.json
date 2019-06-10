@@ -7,7 +7,8 @@
   "license": "Copyright Cole Lawrence",
   "private": true,
   "scripts": {
-    "typeorm": "typeorm"
+    "typeorm": "typeorm",
+    "start": "node -r ts-node/register src/index.ts"
   },
   "devDependencies": {
     "@types/express": "^4.17.0",
